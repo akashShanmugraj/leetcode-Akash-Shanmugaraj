@@ -54,21 +54,25 @@ def removeFinding(output, target):
         return None
 
 def main(index,x,y, word, pathUpdater):
-    print('Current path is ',pathUpdater)
+    # print('Current path is ',pathUpdater)
     if index >= len(word)-1:
         print('Found word is ',word)
         print('\n\n')
         return False
     else:
+        print('word now is', word, 'path is', pathUpdater)
+
         neighbours = [findNeighbours(x,y,'up'), findNeighbours(x,y,'down'), findNeighbours(x,y,'left'), findNeighbours(x,y,'right')]
+        print('Neighbours in the direction up, down, left and right respectively are', neighbours)
         for neighbour in neighbours:
-            if pathUpdater == 'e':
-                print(neighbour)
             if neighbour != None:
                 if neighbour[0] == word[index+1]:
                     pathUpdater += neighbour[0]
                     print(neighbour[0], 'with nearby index')
                     main(index+1, neighbour[1], neighbour[2], word, pathUpdater)
+                elif neighbour[0] != word[index+1]:
+                    print(f'not matching ({board[x][y]})')
+                    # board[x][y] = '$'
 
         index += 1
 
