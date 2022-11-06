@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+          "type": "command",
+          "name": "Open CMD",
+          "program": "cmd",
+        },
+
+    ]
+}
