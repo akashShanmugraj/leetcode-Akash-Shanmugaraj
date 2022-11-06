@@ -1,88 +1,70 @@
 #https://leetcode.com/problems/word-search-ii/
-# Given a 2D board and a list of words from the dictionary, find all words in the board.
-# Each word must be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.
-# Example:
-# Input:
-# words = ["oath","pea","eat","rain"] and board =
-# [
-#   ['o','a','a','n'],
-#   ['e','t','a','e'],
-#   ['i','h','k','r'],
-#   ['i','f','l','v']
-# ]
-# Output: ["eat","oath"]
-# Note:
-# You may assume that all inputs are consist of lowercase letters a-z.
 # You would need to optimize your backtracking to pass the larger test. Could you stop backtracking earlier?
 # If the current candidate does not exist in all words' prefix, you could stop backtracking immediately. What kind of data structure could answer such query efficiently? Does a hash table work? Why or why not? How about a Trie? If you would like to learn how to implement a basic trie, please work on this problem: Implement Trie (Prefix Tree) first.
 #https://leetcode.com/problems/word-search-ii/discuss/59780/Python-dfs-solution-(directly-use-Trie)/61810
 
-board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]]
-words = ["oath","pea","eat","rain"]
-foundWord = ''
-pathList = []
-# pathUpdater = ''
-# processCount = 0
+import numpy as np
 
-def findNeighbours(x,y,mode):
+board = [["a","b"],["c","d"]]
+words = ["abcb"]
+foundWords = []
+
+def tryException(x,y):
     try:
-        if x != 0:
-            if mode=='up':
-                return [board[x-1][y],x-1,y]
-        elif y != 0:
-            if mode=='left':
-                return [board[x][y-1],x,y-1]
-        if mode == 'down':
-            return [board[x + 1][y], x + 1, y]
-        elif mode=='right':
-            return [board[x][y+1],x,y+1]
-        elif mode == 'all':
-            return [board[x-1][y],board[x+1][y],board[x][y-1],board[x][y+1]]
-
-
+        return [board[x][y],x,y]
     except IndexError:
         return None
+def findNeighbours(x,y):
+    return [tryException(x-1,y), tryException(x+1, y),tryException(x,y-1), tryException(x,y+1)]
+
+
 
 def removeFinding(output, target):
     try:
         for out in output:
-            if out != None:
+            if out is not None:
                 if out[1] != target:
                     output.remove(out)
         return output
     except IndexError:
         return None
 
-def main(index,x,y, word, pathUpdater):
-    # print('Current path is ',pathUpdater)
+def main(index,coordinates, word, pathUpdater):
+    x,y = coordinates
     if index >= len(word)-1:
-        print('Found word is ',word)
-        print('\n\n')
-        return False
+        if pathUpdater == word:
+            foundWords.append(word)
+            return True
+        else:
+            return False
     else:
-        print('word now is', word, 'path is', pathUpdater)
-
-        neighbours = [findNeighbours(x,y,'up'), findNeighbours(x,y,'down'), findNeighbours(x,y,'left'), findNeighbours(x,y,'right')]
-        print('Neighbours in the direction up, down, left and right respectively are', neighbours)
+        neighbours = findNeighbours(x, y)
         for neighbour in neighbours:
             if neighbour != None:
                 if neighbour[0] == word[index+1]:
                     pathUpdater += neighbour[0]
-                    print(neighbour[0], 'with nearby index')
-                    main(index+1, neighbour[1], neighbour[2], word, pathUpdater)
-                elif neighbour[0] != word[index+1]:
-                    print(f'not matching ({board[x][y]})')
-                    # board[x][y] = '$'
+                    main(index+1, [neighbour[1], neighbour[2]], word, pathUpdater)
 
         index += 1
 
-def findElement():
-    for row in board:
-        for element in row:
-            for word in words:
-                if element == word[0]:
-                    path = element
-                    main(0, board.index(row), row.index(element),word, path)
 
-print(findElement())
+def coordinatesfromArray(outArray):
+    newArray = []
+    xCoords, yCoords = outArray
+    for num in range(len(xCoords)):
+        newArray.append([xCoords[num], yCoords[num]])
+
+    return newArray
+
+def findElementArray():
+    for word in words:
+        path = word[0]
+        boardArray = np.array(board)
+        locate = coordinatesfromArray(np.where(boardArray == word[0]))
+        for coord in locate:
+            main(0, coord, word, path)
+    return foundWords
+
+# Usage
+print(findElementArray())
 
