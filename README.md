@@ -36,6 +36,7 @@ Output: []
 
 ## #1323 Maximum 69 Number (max69.py)
 *7th November 2022*
+
 You are given a positive integer `num` consisting only of digits `6` and `9`.
 
 Return _the maximum number you can get by changing **at most** one digit (_`6` _becomes_ `9`_, and_ `9` _becomes_ `6`_)_.
@@ -76,3 +77,52 @@ Explanation: It is better not to apply any change.
 
 -   `1 <= num <= 10<sup>4</sup>`
 -   `num` consists of only `6` and `9` digits.
+
+## Make The String Great - LeetCode (makegreat.py)
+*8th November 2022*
+
+Given a string `s` of lower and upper case English letters.
+
+A good string is a string which doesn't have **two adjacent characters** `s[i]` and `s[i + 1]` where:
+
+-   `0 <= i <= s.length - 2`
+-   `s[i]` is a lower-case letter and `s[i + 1]` is the same letter but in upper-case or **vice-versa**.
+
+To make the string good, you can choose **two adjacent** characters that make the string bad and remove them. You can keep doing this until the string becomes good.
+
+Return _the string_ after making it good. The answer is guaranteed to be unique under the given constraints.
+
+**Notice** that an empty string is also good.
+
+**Example 1:**
+
+```
+Input: s = "leEeetcode"
+Output: "leetcode"
+Explanation: In the first step, either you choose i = 1 or i = 2, both will result "leEeetcode" to be reduced to "leetcode".
+
+```
+
+**Example 2:**
+
+```
+Input: s = "abBAcC"
+Output: ""
+Explanation: We have many possible scenarios, and all lead to the same answer. For example:
+"abBAcC" --> "aAcC" --> "cC" --> ""
+"abBAcC" --> "abBA" --> "aA" --> ""
+
+```
+
+**Example 3:**
+
+```
+Input: s = "s"
+Output: "s"
+
+```
+
+**Constraints:**
+
+-   `1 <= s.length <= 100`
+-   `s` contains only lower and upper case English letters.
